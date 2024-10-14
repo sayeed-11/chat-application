@@ -1,20 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+
+import { NativeWindStyleSheet } from "nativewind";
+
+import { NavigationContainer } from '@react-navigation/native';
+
+import Index from './src/Index';
+import * as Font from 'expo-font';
+
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});
 
 export default function App() {
+
+  const [fontsLoaded, setFontsLoaded] = React.useState(false);
+  React.useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'ChakraPetch': require('./assets/fonts/ChakraPetch-Regular.ttf'),
+      });
+      setFontsLoaded(true);
+    }
+
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Index />
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
